@@ -15,7 +15,12 @@ app.prepare().then(() => {
   const io = new Server(httpServer);
 
   io.on("connection", (socket) => {
-    // ...
+    console.log('a user connected');
+     socket.on('message', (data) => {
+        console.log('Received data from client:', data);
+        // Optionally, emit a response back to the client
+        socket.emit('message', `Server received: ${data}`);
+      });
   });
 
   httpServer
