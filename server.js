@@ -20,7 +20,7 @@ app.prepare().then(() => {
         console.log('Received data from client:', data);
         // Optionally, emit a response back to the client
         socket.broadcast.emit('message', `${data}`);
-        socket.emit('message', `Server received: ${data}`);
+        socket.emit('message', `${data}`);
       });
   });
 
