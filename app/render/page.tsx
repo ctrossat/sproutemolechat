@@ -10,6 +10,7 @@ export default function Home() {
   const [transport, setTransport] = useState("N/A");
   const [lastMessage, setLastMessage] = useState("HELLO WORLD");
   const inputRef = useRef<HTMLInputElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     if (socket.connected) {
@@ -36,6 +37,9 @@ export default function Home() {
     socket.on("disconnect", onDisconnect);
     socket.on("message", (message) => {
       setLastMessage(message);
+      if (audioRef.current) {
+        audioRef.current.play();
+      }
     });
 
     return () => {
@@ -47,6 +51,7 @@ export default function Home() {
 
   return (
     <div className="w-full h-full flex bg-green-500 flex-col items-center justify-center">
+        <audio ref={audioRef} src="/swish.mp3" />
         <p className="fixed top-0 left-0 text-2xl">Status: {isConnected ? "connected" : "disconnected"}</p>
         <span className="border-2 border-black" >
             <h1 className="bg-black p-4 text-3xl font-omori border-4 border-white w-[40rem]">{lastMessage}</h1>
