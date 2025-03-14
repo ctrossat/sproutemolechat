@@ -8,7 +8,6 @@ export default function Home() {
   const [transport, setTransport] = useState("N/A");
   const [lastMessage, setLastMessage] = useState("HELLO WORLD");
   const [messages, setMessages] = useState<Array<String>>([]);
-//   const [messages, setMessages] = useState<Array<String>>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
