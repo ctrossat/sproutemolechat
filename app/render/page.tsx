@@ -6,7 +6,8 @@ import { socket } from "@/socket";
 export default function Home() {
   const [isConnected, setIsConnected] = useState(false);
   const [transport, setTransport] = useState("N/A");
-  const [messages, setMessages] = useState<Array<String>>([]);
+  type msgs = {usrname: string, msg: string};
+  const [messages, setMessages] = useState<Array<msgs>>([]);
   const [lastMessage, setLastMessage] = useState("HELLO WORLD");
   const [render, setRender] = useState<'msg' | 'chat'>("msg");
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -78,7 +79,7 @@ export default function Home() {
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("message", (message) => {
-      setMessages((prev) => [message, ...prev]);
+      setMessages((prev) => [{usrname: sproutMoleUsernames[Math.floor(Math.random() * sproutMoleUsernames.length)],msg:message}, ...prev]);
       setLastMessage(message);
       if (audioRef.current) {
         audioRef.current.play();
@@ -115,13 +116,13 @@ export default function Home() {
           </span>
         ) : (
           <div className="border-black border-1">
-          <div className="flex flex-col bg-black p-4 text-3xl font-omori border-2 border-white w-[28rem] h-[40rem] font-omori">
+          <div className="flex flex-col bg-black p-4 text-3xl font-omori border-2 border-white w-[16.55rem] h-[60rem] scrollbar-hidden">
             <h1 className="text-center">SPROUT MOLE CHAT</h1>
-            <div className='flex flex-col-reverse flex-1 overflow-y-auto mt-4'>
+            <div className='flex flex-col-reverse flex-1 overflow-y-auto mt-4 scrollbar-hidden'>
               {messages.map((message, index) => (
                     <p key={index} className="text-left text-2xl w-full">
-                      <span className="text-gray-200 font-condensed">{`<${sproutMoleUsernames[Math.floor(Math.random() * sproutMoleUsernames.length)]}> `}</span>
-                      {message}</p>
+                      <span className="text-gray-200 font-condensed">{`<${message.usrname}> `}</span>
+                      {message.msg}</p>
               ))}
             </div>
           </div>
