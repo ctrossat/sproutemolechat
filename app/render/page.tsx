@@ -55,6 +55,50 @@ export default function Home() {
     "DesperateMoleXX"
   ];
 
+  const humphreyUsernames = [
+    "Hummmphrey",
+    "HumfreeTheLab",
+    "Dr_Humph",
+    "Xx_HumpBot_xX",
+    "GooChefH",
+    "WhaleDocHump",
+    "Hum_FungiFreak",
+    "HumphTheCook",
+    "SlimeWhaleH",
+    "MedHumpPhrey",
+    "Prof_Humph",
+    "Hump_Research",
+    "Xx_SlimeGuru_xX",
+    "SeaLabHump",
+    "HumphreyLabX",
+    "WitchPetHump",
+    "GooeyHumph",
+    "MizuchiHump",
+    "MarinaHump",
+    "SlimeMancerH",
+    "HumpGrump",
+    "GoofyPhrey",
+    "BLUB_BLUB_H",
+    "Xx_TooManyMe_xX",
+    "HumpHungry99",
+    "SLIMEYBOI_H",
+    "HumphREEEEE",
+    "HumpLostAgain",
+    "WhaleOfTears",
+    "OopsAllHumphs",
+    "Hump_Oopsie",
+    "Xx_GooBrain_xX",
+    "HumpForgetful",
+    "CryBabyHump",
+    "HumpDERP",
+    "HumphreyWTF",
+    "BlobfishHump",
+    "Dumbphrey69",
+    "HumpTiredZzz",
+    "BigMoodWhale"
+  ];
+  
+
   useEffect(() => {
     if (socket.connected) {
       onConnect();
@@ -79,7 +123,7 @@ export default function Home() {
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("message", (message) => {
-      setMessages((prev) => [{usrname: sproutMoleUsernames[Math.floor(Math.random() * sproutMoleUsernames.length)],msg:message}, ...prev]);
+      setMessages((prev) => [{usrname: humphreyUsernames[Math.floor(Math.random() * humphreyUsernames.length)],msg:message}, ...prev]);
       setLastMessage(message);
       if (audioRef.current) {
         audioRef.current.play();
@@ -117,7 +161,7 @@ export default function Home() {
         ) : (
           <div className="border-black border-1">
           <div className="flex flex-col bg-black p-4 text-3xl font-omori border-2 border-white w-[16.55rem] h-[60rem] scrollbar-hidden">
-            <h1 className="text-center">SPROUT MOLE CHAT</h1>
+            <h1 className="text-center mt-4 relative"><span className="line-through absolute top-[-1.6rem] left-[-0.5rem] rotate-[-4deg]">SPROUT MOLE</span> HUMPHREY CHAT</h1>
             <div className='flex flex-col-reverse flex-1 overflow-y-auto mt-4 scrollbar-hidden'>
               {messages.map((message, index) => (
                     <p key={index} className="text-left text-2xl w-full">
