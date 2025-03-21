@@ -10,7 +10,9 @@ export default function Home() {
   const [messages, setMessages] = useState<Array<msgs>>([]);
   const [lastMessage, setLastMessage] = useState("HELLO WORLD");
   const [render, setRender] = useState<'msg' | 'chat'>("msg");
+  const [renderType, setRenderType] = useState<'sprout' | 'humphrey'>("sprout");
   const audioRef = useRef<HTMLAudioElement>(null);
+  
 
   const sproutMoleUsernames = [
     "Tofu4Life",
@@ -98,7 +100,6 @@ export default function Home() {
     "BigMoodWhale"
   ];
   
-
   useEffect(() => {
     if (socket.connected) {
       onConnect();
@@ -123,7 +124,8 @@ export default function Home() {
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("message", (message) => {
-      setMessages((prev) => [{usrname: humphreyUsernames[Math.floor(Math.random() * humphreyUsernames.length)],msg:message}, ...prev]);
+      const usrname = renderType === 'sprout' ? sproutMoleUsernames[Math.floor(Math.random() * sproutMoleUsernames.length)] : humphreyUsernames[Math.floor(Math.random() * humphreyUsernames.length)];
+      setMessages((prev) => [{usrname,msg:message}, ...prev]);
       setLastMessage(message);
       if (audioRef.current) {
         audioRef.current.play();
@@ -135,13 +137,14 @@ export default function Home() {
       socket.off("disconnect", onDisconnect);
       socket.off("message");
     };
-  }, []);
+  }, [renderType]);
 
   return (
     <div className="w-full h-full flex bg-green-500 flex-col items-center justify-top pt-20">
         <audio ref={audioRef} src="/swish.mp3" />
         <div className="flex flex-col fixed left-8 top-8">
           <p className="text-2xl">Status: {isConnected ? "connected" : "disconnected"}</p>
+          
           <div className='mt-4 flex flex-col' onChange={(e) => {setRender((e.target as HTMLInputElement).value as 'msg' | 'chat')}}>
             <div className="flex items-center py-2 px-3 hover:bg-green-600 rounded-md">
               <input id='radio1' type="radio" value="msg" name="render" defaultChecked/>
@@ -152,6 +155,18 @@ export default function Home() {
               <label htmlFor='radio2' className="ml-2">Chat block</label>
             </div>
           </div>
+
+          <div className='mt-4 flex flex-col' onChange={(e) => {
+            const value = (setRenderType((e.target as HTMLInputElement).value as 'sprout' | 'humphrey'));}}>
+              <div className="flex items-center py-2 px-3 hover:bg-green-600 rounded-md">
+              <input id='radioType1' type="radio" value="sprout" name="renderType" defaultChecked/>
+              <label htmlFor='radioType1' className="ml-2">Sprout Mole</label>
+            </div>
+            <div className="flex items-center py-2 px-3 hover:bg-green-600 rounded-md">
+              <input id='radioType2' type="radio" value="humphrey" name="renderType" />
+              <label htmlFor='radioType2' className="ml-2">Humphrey</label>
+            </div>
+          </div>
         </div>
 
         {render === 'msg' ? (
@@ -160,8 +175,16 @@ export default function Home() {
           </span>
         ) : (
           <div className="border-black border-1">
-          <div className="flex flex-col bg-black p-4 text-3xl font-omori border-2 border-white w-[16.55rem] h-[60rem] scrollbar-hidden">
-            <h1 className="text-center mt-4 relative"><span className="line-through absolute top-[-1.6rem] left-[-0.5rem] rotate-[-4deg]">SPROUT MOLE</span> HUMPHREY CHAT</h1>
+          <div className="flex flex-col bg-black p-5 text-3xl font-omori border-2 border-white w-[16.55rem] h-[60rem] scrollbar-hidden">
+            {renderType === 'sprout' ? (
+              <h1 className="text-center mt-4 relative">
+                <span className="line-through absolute text-[1.75rem] top-[-1.8rem] left-[-0.5rem] rotate-[-4deg]">SPROUT MOLE</span> 
+                <span className="line-through text-[1.75rem] absolute top-[-1.8rem] left-[8rem] rotate-[-1deg]">HUMPHREY</span> 
+                SPROUT MOLE CHAT</h1>
+            ) 
+            : (  
+              <h1 className="text-center mt-4 relative"><span className="line-through absolute top-[-1.6rem] left-[-0.5rem] rotate-[-4deg]">SPROUT MOLE</span> HUMPHREY CHAT</h1>
+            )}
             <div className='flex flex-col-reverse flex-1 overflow-y-auto mt-4 scrollbar-hidden'>
               {messages.map((message, index) => (
                     <p key={index} className="text-left text-2xl w-full">
