@@ -10,7 +10,8 @@ export default function Home() {
   const [messages, setMessages] = useState<Array<msgs>>([]);
   const [lastMessage, setLastMessage] = useState("HELLO WORLD");
   const [render, setRender] = useState<'msg' | 'chat'>("msg");
-  const [renderType, setRenderType] = useState<'sprout' | 'humphrey'>("sprout");
+  type renderType = 'sprout' | 'humphrey' | 'something';
+  const [renderType, setRenderType] = useState<renderType>("sprout");
   const audioRef = useRef<HTMLAudioElement>(null);
   
 
@@ -99,6 +100,29 @@ export default function Home() {
     "HumpTiredZzz",
     "BigMoodWhale"
   ];
+
+  const fearUsernames = [
+    "?????",
+    "drown?",
+    "Mari...",
+    "B?sil",
+    "lost.",
+    "deep??",
+    "fall!!",
+    "skitter",
+    "HANG?",
+    "silk..",
+    "s?ink",
+    "WHY??",
+    "NoAir",
+    "legs??",
+    "FALL.",
+    "tied.",
+    "drip?",
+    "fade_",
+    "gone?",
+    "STAY."
+  ];
   
   useEffect(() => {
     if (socket.connected) {
@@ -124,7 +148,9 @@ export default function Home() {
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("message", (message) => {
-      const usrname = renderType === 'sprout' ? sproutMoleUsernames[Math.floor(Math.random() * sproutMoleUsernames.length)] : humphreyUsernames[Math.floor(Math.random() * humphreyUsernames.length)];
+      const usrname = renderType === 'sprout' ? sproutMoleUsernames[Math.floor(Math.random() * sproutMoleUsernames.length)] 
+        : renderType === 'humphrey' ? humphreyUsernames[Math.floor(Math.random() * humphreyUsernames.length)]
+        : fearUsernames[Math.floor(Math.random() * fearUsernames.length)];
       setMessages((prev) => [{usrname,msg:message}, ...prev]);
       setLastMessage(message);
       if (audioRef.current) {
@@ -157,7 +183,7 @@ export default function Home() {
           </div>
 
           <div className='mt-4 flex flex-col' onChange={(e) => {
-            const value = (setRenderType((e.target as HTMLInputElement).value as 'sprout' | 'humphrey'));}}>
+            const value = (setRenderType((e.target as HTMLInputElement).value as renderType));}}>
               <div className="flex items-center py-2 px-3 hover:bg-green-600 rounded-md">
               <input id='radioType1' type="radio" value="sprout" name="renderType" defaultChecked/>
               <label htmlFor='radioType1' className="ml-2">Sprout Mole</label>
@@ -166,6 +192,10 @@ export default function Home() {
               <input id='radioType2' type="radio" value="humphrey" name="renderType" />
               <label htmlFor='radioType2' className="ml-2">Humphrey</label>
             </div>
+            <div className="flex items-center py-2 px-3 hover:bg-green-600 rounded-md">
+              <input id='radioType3' type="radio" value="something" name="renderType" />
+              <label htmlFor='radioType3' className="ml-2">Something</label>
+            </div>
           </div>
         </div>
 
@@ -173,7 +203,7 @@ export default function Home() {
           <span className="border-2 border-black" >
               <h1 className="bg-black p-4 text-3xl font-omori border-4 border-white w-[35rem]">{lastMessage}</h1>
           </span>
-        ) : (
+        ) :  (
           <div className="border-black border-1">
           <div className="flex flex-col bg-black p-5 text-3xl font-omori border-2 border-white w-[16.55rem] h-[60rem] scrollbar-hidden">
             {renderType === 'sprout' ? (
@@ -182,13 +212,15 @@ export default function Home() {
                 <span className="line-through text-[1.75rem] absolute top-[-1.8rem] left-[8rem] rotate-[-1deg]">HUMPHREY</span> 
                 SPROUT MOLE CHAT</h1>
             ) 
-            : (  
+            : renderType === 'humphrey' ? (  
               <h1 className="text-center mt-4 relative"><span className="line-through absolute top-[-1.6rem] left-[-0.5rem] rotate-[-4deg]">SPROUT MOLE</span> HUMPHREY CHAT</h1>
+            ) : (
+              <h1 className="text-center relative font-scared font-omori">??? CHAT</h1>
             )}
             <div className='flex flex-col-reverse flex-1 overflow-y-auto mt-4 scrollbar-hidden'>
               {messages.map((message, index) => (
-                    <p key={index} className="text-left text-2xl w-full">
-                      <span className="text-gray-200 font-condensed">{`<${message.usrname}> `}</span>
+                    <p key={index} className={"text-left w-full " + (renderType === 'something' ? 'font-scared text-3xl' : 'text-2xl')}>
+                      <span className={"font-condensed font-omori " + (renderType === 'something' ? 'opacity-60' : 'text-gray-200')}>{`<${message.usrname}> `}</span>
                       {message.msg}</p>
               ))}
             </div>
