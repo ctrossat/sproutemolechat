@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sprout Mole chat
 
-## Getting Started
+Inspired by the game Omori and made for restrained usage with friends. This app uses a custom node.js server with NextJS and Socket.io to emulate a private livestream chat.
+
+## Usage
 
 First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For the chat side: [http://localhost:3000/chat](http://localhost:3000/chat)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+For the render side: [http://localhost:3000/render](http://localhost:3000/render)
 
-## Learn More
+## Pages
 
-To learn more about Next.js, take a look at the following resources:
+### /chat 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This page is for the user that wish to send messages to the chat. It also contain a simple chat history.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### /render
 
-## Deploy on Vercel
+This page displays a render in the style of the game Omori. The user can choose to either display the last message sent like it was a dialogue with a npc. Or a more conventional 'streamer chat' looking render of all last sent messages.  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This page also include a choice of 'theme', the choices impact minor graphic element as well as changing the pool from wich the randomly chosen username are picked.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Due to an oversight made while coding it is recommanded to have a 90% zoom on this page ;)
+
+## Preview
+
+Chatter POV:
+
+![Preview of /chat page](preview.png)
+
+Render of the chat with OBS:
+
+![Preview of /render page](preview2.png)
+
